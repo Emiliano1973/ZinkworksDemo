@@ -1,0 +1,47 @@
+generate jar file by mvn
+mvn -clean -package
+
+copy the generated demo-0.0.1-SNAPSHOT.jar from target to your home directory.
+open comand line console and digit
+
+java -jar demo-0.0.1-SNAPSHOT.jar
+
+run a rest client (PostMan for instance), 
+digt in url bar http://localhost:8080/atm, PUT as http method.
+in body request add the following json
+
+{
+    "pin": "pinuNumber",
+    "amountRequested": 315 //amount requested by user from 5 to 50, multiple of 5 and 10
+}
+
+when the pin is validated and the banknotes were taken by ATM , the respose will contain the field response that contains two value(SUCCESS OR FAIL) the message where it's said how many money was taken from ATM,
+StatusCode where is stored the httpstatus code (in this case 200) and accountDetails where the updated account data (new Balance) is showed.
+
+{
+    "response": "SUCCESS",
+    "message": "Ammount paid :  315",
+    "statusCode": 200,
+    "accountDetails": {
+        "accountNumber": "123456789",
+        "pin": "1234",
+        "openingBalance": 485,
+        "overdraft": 200
+    }
+}
+
+If there any error in validation(Pin incorrect format or account not found) or there is not banknotes availabilty in this case the json will just show the response code(FAIL) the message and and http code in status code
+
+{
+    "response": "FAIL",
+    "message": "Error message",
+    "statusCode": http error status code
+    
+}
+
+
+accounts available 
+
+Account Number	PIN	Opening Balance	Overdraft
+123456789		1234	800			200
+987654321		4321	1230			150
